@@ -1,0 +1,33 @@
+{
+    "id": "persist-files",
+    "version": "1.0.0",
+    "name": "Persist files",
+    "description": "Persist specified files between devcontainer runs through a volume.",
+    "onCreateCommand": {
+        "persist-files": "/usr/local/bin/persist-files.sh"
+    },
+    "options": {
+        "user": {
+            "type": "string",
+            "default": "vscode",
+            "description": "User to setup persisted directories for."
+        },
+        "group": {
+            "type": "string",
+            "default": "vscode",
+            "description": "Group to setup persisted directories for."
+        },
+        "paths": {
+            "type": "string",
+            "default": "/home/$USER/.cache",
+            "description": "Comma-separated list of paths to persist. Use $USER to reference the configured user. If a path does not exist yet, a dangling symlink is created and the application creates the file or directory naturally on first use."
+        }
+    },
+    "mounts": [
+        {
+            "type": "volume",
+            "source": "persist-files-${devcontainerId}",
+            "target": "/mnt/persist-files"
+        }
+    ]
+}

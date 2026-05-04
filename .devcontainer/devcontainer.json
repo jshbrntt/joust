@@ -1,0 +1,25 @@
+{
+  "name": "joust",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "features": {
+    "./features/dive": {},
+    "./features/docker-in-docker": {},
+    "./features/persist-files": {
+      "user": "joust",
+      "group": "joust",
+      "paths": "/home/$USER/.bash_history,/home/$USER/.bun/install/cache,/home/$USER/.cache,/home/$USER/.claude,/home/$USER/.claude.json,/home/$USER/.context7,/home/$USER/.docker,/home/$USER/.ssh"
+    }
+  },
+  "remoteUser": "joust",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "anthropic.claude-code",q
+        "openai.chatgpt",
+        "oven.bun-vscode"
+      ]
+    }
+  }
+}
