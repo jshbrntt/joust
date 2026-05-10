@@ -33,18 +33,18 @@ joust.wr7 \
 joust.wra
 JOUST_ROM_FILES := $(addprefix $(JOUST_ROM_DIRECTORY)/,$(JOUST_ROM_FILES))
 JOUST_REWRITE_ROM_FILES := \
-joust_rom_1b_3006-13.e4 \
-joust_rom_2b_3006-14.c4 \
-joust_rom_3b_3006-15.a4 \
-joust_rom_4b_3006-16.e5 \
-joust_rom_5b_3006-17.c5 \
-joust_rom_6b_3006-18.a5 \
-joust_rom_7b_3006-19.e6 \
-joust_rom_8b_3006-20.c6 \
-joust_rom_9b_3006-21.a6 \
-joust_rom_10b_3006-22.a7 \
-joust_rom_11b_3006-23.c7 \
-joust_rom_12b_3006-24.e7
+3006-13.1b \
+3006-14.2b \
+3006-15.3b \
+3006-16.4b \
+3006-17.5b \
+3006-18.6b \
+3006-19.7b \
+3006-20.8b \
+3006-21.9b \
+3006-22.10b \
+3006-23.11b \
+3006-24.12b
 JOUST_BYTE_OFFSETS := \
 0x0000-0x0FFF \
 0x1000-0x1FFF \
@@ -59,15 +59,17 @@ JOUST_BYTE_OFFSETS := \
 0xE000-0xEFFF \
 0xF000-0xFFFF
 JOUST_REWRITE_ROM_FILES := $(addprefix $(JOUST_ROM_DIRECTORY)/,$(JOUST_REWRITE_ROM_FILES))
-JOUST_REWRITE_SOUND_ROM_FILE := $(JOUST_ROM_DIRECTORY)/video_sound_rom_4_std_780.ic12
+JOUST_REWRITE_SOUND_ROM_FILE := $(JOUST_ROM_DIRECTORY)/joust.snd
 JOUST_REWRITE_DECODER_ROM_FILES := \
-$(JOUST_ROM_DIRECTORY)/decoder_rom_4.3g \
-$(JOUST_ROM_DIRECTORY)/decoder_rom_6.3c
+$(JOUST_ROM_DIRECTORY)/decoder.4 \
+$(JOUST_ROM_DIRECTORY)/decoder.6
 JOUST_REWRITE_ZIP := $(JOUST_ROM_DIRECTORY)/joust.zip
-JOUST_REWRITE_FILES := \
+JOUST_REWRITE_FILES = \
 $(JOUST_REWRITE_ROM_FILES) \
+$(JOUST_REWRITE_DECODER_ROM_FILES) \
 $(JOUST_REWRITE_SOUND_ROM_FILE) \
-$(JOUST_REWRITE_DECODER_ROM_FILES)
+$(JOUSTR_REWRITE_ROM_FILES) \
+$(JOUSTWR_REWRITE_ROM_FILES)
 JOUST_REWRITE_ROM_PAIRS := $(join $(addsuffix |,$(JOUST_REWRITE_ROM_FILES)),$(JOUST_BYTE_OFFSETS))
 JOUSTR_REWRITE_ROM_FILES := \
 $(JOUST_ROM_DIRECTORY)/joustr/joust.sr4 \
@@ -93,22 +95,23 @@ $(JOUST_ROM_DIRECTORY)/joustwr/joust.wra
 JOUSTWR_REWRITE_ROM_PAIRS := \
 $(JOUST_ROM_DIRECTORY)/joustwr/joust.wr7|0x6000-0x6FFF \
 $(JOUST_ROM_DIRECTORY)/joustwr/joust.wra|0xD000-0xDFFF
-JOUST_VERIFY_ROM_PAIRS := \
-'$(JOUST_ROM_DIRECTORY)/joust_rom_1b_3006-13.e4|$(JOUST_ORIGINAL_DIRECTORY)/3006-13.1b' \
-'$(JOUST_ROM_DIRECTORY)/joust_rom_2b_3006-14.c4|$(JOUST_ORIGINAL_DIRECTORY)/3006-14.2b' \
-'$(JOUST_ROM_DIRECTORY)/joust_rom_3b_3006-15.a4|$(JOUST_ORIGINAL_DIRECTORY)/3006-15.3b' \
-'$(JOUST_ROM_DIRECTORY)/joust_rom_4b_3006-16.e5|$(JOUST_ORIGINAL_DIRECTORY)/3006-16.4b' \
-'$(JOUST_ROM_DIRECTORY)/joust_rom_5b_3006-17.c5|$(JOUST_ORIGINAL_DIRECTORY)/3006-17.5b' \
-'$(JOUST_ROM_DIRECTORY)/joust_rom_6b_3006-18.a5|$(JOUST_ORIGINAL_DIRECTORY)/3006-18.6b' \
-'$(JOUST_ROM_DIRECTORY)/joust_rom_7b_3006-19.e6|$(JOUST_ORIGINAL_DIRECTORY)/3006-19.7b' \
-'$(JOUST_ROM_DIRECTORY)/joust_rom_8b_3006-20.c6|$(JOUST_ORIGINAL_DIRECTORY)/3006-20.8b' \
-'$(JOUST_ROM_DIRECTORY)/joust_rom_9b_3006-21.a6|$(JOUST_ORIGINAL_DIRECTORY)/3006-21.9b' \
-'$(JOUST_ROM_DIRECTORY)/joust_rom_10b_3006-22.a7|$(JOUST_ORIGINAL_DIRECTORY)/3006-22.10b' \
-'$(JOUST_ROM_DIRECTORY)/joust_rom_11b_3006-23.c7|$(JOUST_ORIGINAL_DIRECTORY)/3006-23.11b' \
-'$(JOUST_ROM_DIRECTORY)/joust_rom_12b_3006-24.e7|$(JOUST_ORIGINAL_DIRECTORY)/3006-24.12b' \
+JOUST_VERIFY_PARENT_ROM_PAIRS := \
+'$(JOUST_ROM_DIRECTORY)/3006-13.1b|$(JOUST_ORIGINAL_DIRECTORY)/3006-13.1b' \
+'$(JOUST_ROM_DIRECTORY)/3006-14.2b|$(JOUST_ORIGINAL_DIRECTORY)/3006-14.2b' \
+'$(JOUST_ROM_DIRECTORY)/3006-15.3b|$(JOUST_ORIGINAL_DIRECTORY)/3006-15.3b' \
+'$(JOUST_ROM_DIRECTORY)/3006-16.4b|$(JOUST_ORIGINAL_DIRECTORY)/3006-16.4b' \
+'$(JOUST_ROM_DIRECTORY)/3006-17.5b|$(JOUST_ORIGINAL_DIRECTORY)/3006-17.5b' \
+'$(JOUST_ROM_DIRECTORY)/3006-18.6b|$(JOUST_ORIGINAL_DIRECTORY)/3006-18.6b' \
+'$(JOUST_ROM_DIRECTORY)/3006-19.7b|$(JOUST_ORIGINAL_DIRECTORY)/3006-19.7b' \
+'$(JOUST_ROM_DIRECTORY)/3006-20.8b|$(JOUST_ORIGINAL_DIRECTORY)/3006-20.8b' \
+'$(JOUST_ROM_DIRECTORY)/3006-21.9b|$(JOUST_ORIGINAL_DIRECTORY)/3006-21.9b' \
+'$(JOUST_ROM_DIRECTORY)/3006-22.10b|$(JOUST_ORIGINAL_DIRECTORY)/3006-22.10b' \
+'$(JOUST_ROM_DIRECTORY)/3006-23.11b|$(JOUST_ORIGINAL_DIRECTORY)/3006-23.11b' \
+'$(JOUST_ROM_DIRECTORY)/3006-24.12b|$(JOUST_ORIGINAL_DIRECTORY)/3006-24.12b' \
 '$(JOUST_REWRITE_SOUND_ROM_FILE)|$(JOUST_ORIGINAL_DIRECTORY)/joust.snd' \
-'$(JOUST_ROM_DIRECTORY)/decoder_rom_4.3g|$(JOUST_ORIGINAL_DIRECTORY)/decoder.4' \
-'$(JOUST_ROM_DIRECTORY)/decoder_rom_6.3c|$(JOUST_ORIGINAL_DIRECTORY)/decoder.6' \
+'$(JOUST_ROM_DIRECTORY)/decoder.4|$(JOUST_ORIGINAL_DIRECTORY)/decoder.4' \
+'$(JOUST_ROM_DIRECTORY)/decoder.6|$(JOUST_ORIGINAL_DIRECTORY)/decoder.6'
+JOUSTR_VERIFY_ROM_PAIRS := \
 '$(JOUST_ROM_DIRECTORY)/joustr/joust.sr4|$(JOUST_ORIGINAL_DIRECTORY)/joustr/joust.sr4' \
 '$(JOUST_ROM_DIRECTORY)/joustr/joust.sr6|$(JOUST_ORIGINAL_DIRECTORY)/joustr/joust.sr6' \
 '$(JOUST_ROM_DIRECTORY)/joustr/joust.sr7|$(JOUST_ORIGINAL_DIRECTORY)/joustr/joust.sr7' \
@@ -116,7 +119,8 @@ JOUST_VERIFY_ROM_PAIRS := \
 '$(JOUST_ROM_DIRECTORY)/joustr/joust.sr9|$(JOUST_ORIGINAL_DIRECTORY)/joustr/joust.sr9' \
 '$(JOUST_ROM_DIRECTORY)/joustr/joust.sra|$(JOUST_ORIGINAL_DIRECTORY)/joustr/joust.sra' \
 '$(JOUST_ROM_DIRECTORY)/joustr/joust.srb|$(JOUST_ORIGINAL_DIRECTORY)/joustr/joust.srb' \
-'$(JOUST_ROM_DIRECTORY)/joustr/joust.src|$(JOUST_ORIGINAL_DIRECTORY)/joustr/joust.src' \
+'$(JOUST_ROM_DIRECTORY)/joustr/joust.src|$(JOUST_ORIGINAL_DIRECTORY)/joustr/joust.src'
+JOUSTWR_VERIFY_ROM_PAIRS := \
 '$(JOUST_ROM_DIRECTORY)/joustwr/joust.wr7|$(JOUST_ORIGINAL_DIRECTORY)/joustwr/joust.wr7' \
 '$(JOUST_ROM_DIRECTORY)/joustwr/joust.wra|$(JOUST_ORIGINAL_DIRECTORY)/joustwr/joust.wra'
 ZIP_EXTENSION := zip
@@ -204,22 +208,33 @@ $(SRC_REWRITE_DIRECTORY)/joust_mods.ASM
 
 verify: build download
 	@set -e
-	for pair in $(JOUST_VERIFY_ROM_PAIRS); do
-		built="$${pair%%|*}"
-		original="$${pair#*|}"
-		echo "Verifying $$built against $$original"
-		built_sha="$$(sha1sum "$$built")"
-		original_sha="$$(sha1sum "$$original")"
-		built_sha="$${built_sha%% *}"
-		original_sha="$${original_sha%% *}"
-		if [ "$$built_sha" != "$$original_sha" ]; then
-			echo "SHA1 mismatch: $$built"
-			echo "  built:    $$built_sha"
-			echo "  original: $$original_sha ($$original)"
-			exit 1
-		fi
-		echo "OK $$built"
-	done
+	green="$$(printf '\033[32m')"
+	red="$$(printf '\033[31m')"
+	reset="$$(printf '\033[0m')"
+	verify_group() {
+		group="$$1"
+		shift
+		printf "%s\n" "$$group"
+		for pair in "$$@"; do
+			built="$${pair%%|*}"
+			original="$${pair#*|}"
+			built_sha="$$(sha1sum "$$built")"
+			original_sha="$$(sha1sum "$$original")"
+			built_sha="$${built_sha%% *}"
+			original_sha="$${original_sha%% *}"
+			built_name="$${built#$(JOUST_ROM_DIRECTORY)/}"
+			if [ "$$built_sha" != "$$original_sha" ]; then
+				printf "  %sFAIL%s %s\n" "$$red" "$$reset" "$$built_name"
+				printf "    built:    %s\n" "$$built_sha"
+				printf "    original: %s (%s)\n" "$$original_sha" "$$original"
+				return 1
+			fi
+			printf "  %sOK%s   %s\n" "$$green" "$$reset" "$$built_name"
+		done
+	}
+	verify_group "joust (green label)" $(JOUST_VERIFY_PARENT_ROM_PAIRS)
+	verify_group "joustr (red label)" $(JOUSTR_VERIFY_ROM_PAIRS)
+	verify_group "joustwr (white/red label)" $(JOUSTWR_VERIFY_ROM_PAIRS)
 
 build: $(JOUST_REWRITE_ZIP) $(JOUSTR_REWRITE_ROM_FILES) $(JOUSTWR_REWRITE_ROM_FILES)
 
@@ -280,15 +295,21 @@ $(JOUST_REWRITE_SOUND_ROM_FILE): $(BIN_DIRECTORY)/vsndrm4.p | $(JOUST_ROM_DIRECT
 $(BIN_DIRECTORY)/decoder.p $(BIN_DIRECTORY)/decoder.lst: $(SRC_REWRITE_DIRECTORY)/decoder_roms.asm | $(BIN_DIRECTORY)
 	asl $< -L -olist $(BIN_DIRECTORY)/decoder.lst -o $(BIN_DIRECTORY)/decoder.p
 
-$(JOUST_ROM_DIRECTORY)/decoder_rom_4.3g: $(BIN_DIRECTORY)/decoder.p | $(JOUST_ROM_DIRECTORY)
+$(JOUST_ROM_DIRECTORY)/decoder.4: $(BIN_DIRECTORY)/decoder.p | $(JOUST_ROM_DIRECTORY)
 	p2bin $< $@ -r 0x0000-0x01FF
 
-$(JOUST_ROM_DIRECTORY)/decoder_rom_6.3c: $(BIN_DIRECTORY)/decoder.p | $(JOUST_ROM_DIRECTORY)
+$(JOUST_ROM_DIRECTORY)/decoder.6: $(BIN_DIRECTORY)/decoder.p | $(JOUST_ROM_DIRECTORY)
 	p2bin $< $@ -r 0x0200-0x03FF
 
 $(JOUST_REWRITE_ZIP): $(JOUST_REWRITE_FILES) | $(JOUST_ROM_DIRECTORY)
 	rm -f $@
-	zip $@ $^
+	cd $(JOUST_ROM_DIRECTORY)
+	zip $(notdir $@) \
+		$(notdir $(JOUST_REWRITE_ROM_FILES)) \
+		$(notdir $(JOUST_REWRITE_DECODER_ROM_FILES)) \
+		$(notdir $(JOUST_REWRITE_SOUND_ROM_FILE)) \
+		$(patsubst $(JOUST_ROM_DIRECTORY)/%,%,$(JOUSTR_REWRITE_ROM_FILES)) \
+		$(patsubst $(JOUST_ROM_DIRECTORY)/%,%,$(JOUSTWR_REWRITE_ROM_FILES))
 
 # .PHONY: rewrite
 # rewrite: $(JOUST_REWRITE_ROM_FILES)
