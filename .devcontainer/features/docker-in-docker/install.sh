@@ -10,6 +10,15 @@ USERNAME="${_REMOTE_USER:-$(id -un 1000 2>/dev/null || echo root)}"
 
 apk add --no-cache docker-engine docker-cli docker-cli-compose iptables
 
+mkdir -p /etc/docker
+cat > /etc/docker/daemon.json << 'DAEMON_EOF'
+{
+    "features": {
+        "containerd-snapshotter": true
+    }
+}
+DAEMON_EOF
+
 addgroup -S docker 2>/dev/null || true
 if [ "$USERNAME" != "root" ]; then
     addgroup "$USERNAME" docker

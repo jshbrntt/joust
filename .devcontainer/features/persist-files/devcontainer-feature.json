@@ -19,8 +19,8 @@
         },
         "paths": {
             "type": "string",
-            "default": "/home/$USER/.cache",
-            "description": "Comma-separated list of paths to persist. Use $USER to reference the configured user. If a path does not exist yet, a dangling symlink is created and the application creates the file or directory naturally on first use."
+            "default": "directory:/home/$USER/.cache",
+            "description": "Comma-separated list of typed paths to persist. Entries must be formatted as directory:/absolute/path or file:/absolute/path. Use $USER to reference the configured user. If a path does not exist yet, the requested file or directory is stubbed in the persistent volume before creating the symlink."
         }
     },
     "mounts": [

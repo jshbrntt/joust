@@ -1,25 +1,34 @@
 {
-  "name": "joust",
+  "name": "${localWorkspaceFolderBasename}",
   "build": {
     "dockerfile": "Dockerfile"
   },
+  "remoteUser": "${localWorkspaceFolderBasename}",
   "features": {
+    "./features/alpine-project": {
+      "project": "${localWorkspaceFolderBasename}"
+    },
+    "./features/bun": {
+      "version": "1.3.12",
+      "user": "${localWorkspaceFolderBasename}"
+    },
+    "./features/codex": {},
     "./features/dive": {},
     "./features/docker-in-docker": {},
     "./features/persist-files": {
-      "user": "joust",
-      "group": "joust",
-      "paths": "/home/$USER/.bash_history,/home/$USER/.bun/install/cache,/home/$USER/.cache,/home/$USER/.claude,/home/$USER/.claude.json,/home/$USER/.context7,/home/$USER/.docker,/home/$USER/.ssh"
-    }
+      "user": "${localWorkspaceFolderBasename}",
+      "group": "${localWorkspaceFolderBasename}",
+      "paths": "directory:/home/$USER/.cache,directory:/home/$USER/.codex"
+    },
+    "./features/playwright-mcp": {}
   },
-  "remoteUser": "joust",
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "anthropic.claude-code",q
-        "openai.chatgpt",
-        "oven.bun-vscode"
-      ]
-    }
-  }
+  "overrideFeatureInstallOrder": [
+    "./features/alpine-project",
+    "./features/bun",
+    "./features/codex",
+    "./features/dive",
+    "./features/docker-in-docker",
+    "./features/persist-files",
+    "./features/playwright-mcp"
+  ]
 }

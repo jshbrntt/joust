@@ -1,0 +1,28 @@
+{
+    "id": "alpine-project",
+    "version": "1.0.0",
+    "name": "Alpine project user",
+    "description": "Installs common Alpine development packages and creates the project user with passwordless sudo.",
+    "options": {
+        "project": {
+            "type": "string",
+            "default": "vscode",
+            "description": "Project user and group name to create."
+        },
+        "uid": {
+            "type": "string",
+            "default": "1000",
+            "description": "UID for the project user."
+        },
+        "gid": {
+            "type": "string",
+            "default": "1000",
+            "description": "GID for the project group."
+        },
+        "packages": {
+            "type": "string",
+            "default": "bash curl git sudo unzip openssh tig libstdc++ libgcc",
+            "description": "Space-separated Alpine packages to install."
+        }
+    }
+}

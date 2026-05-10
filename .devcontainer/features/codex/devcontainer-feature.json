@@ -1,0 +1,20 @@
+{
+    "id": "codex",
+    "version": "1.0.0",
+    "name": "Codex",
+    "description": "Installs the OpenAI Codex CLI from the Linux musl release binary.",
+    "options": {
+        "version": {
+            "type": "string",
+            "default": "latest",
+            "description": "Codex GitHub release tag to install, or latest."
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "openai.chatgpt"
+            ]
+        }
+    }
+}

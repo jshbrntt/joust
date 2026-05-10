@@ -1,0 +1,25 @@
+{
+    "id": "playwright-mcp",
+    "version": "1.0.0",
+    "name": "Playwright MCP",
+    "description": "Installs the Playwright MCP server with Alpine Chromium support.",
+    "options": {
+        "version": {
+            "type": "string",
+            "default": "latest",
+            "description": "Playwright MCP npm package version to install."
+        },
+        "installChromium": {
+            "type": "boolean",
+            "default": true,
+            "description": "Install Alpine's Chromium package and configure a helper command for it."
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-playwright.playwright"
+            ]
+        }
+    }
+}
