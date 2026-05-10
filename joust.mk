@@ -1,5 +1,9 @@
 BIN_DIRECTORY := bin
 JOUST_ROM_DIRECTORY ?= $(BIN_DIRECTORY)/roms
+JOUST_ORIGINAL_DIRECTORY ?= $(BIN_DIRECTORY)/original
+JOUST_ORIGINAL_ZIP := $(JOUST_ORIGINAL_DIRECTORY)/joust.zip
+JOUST_ORIGINAL_URL := https://archive.org/download/arcade_joust/joust.zip
+JOUST_ORIGINAL_STAMP := $(JOUST_ORIGINAL_DIRECTORY)/.extracted
 JOUST_ROM_FILES := \
 3006-13.1b \
 3006-14.2b \
@@ -64,6 +68,22 @@ $(JOUST_REWRITE_ROM_FILES) \
 $(JOUST_REWRITE_SOUND_ROM_FILE) \
 $(JOUST_REWRITE_DECODER_ROM_FILES)
 JOUST_REWRITE_ROM_PAIRS := $(join $(addsuffix |,$(JOUST_REWRITE_ROM_FILES)),$(JOUST_BYTE_OFFSETS))
+JOUST_VERIFY_ROM_PAIRS := \
+'$(JOUST_ROM_DIRECTORY)/joust_rom_1b_3006-13.e4|$(JOUST_ORIGINAL_DIRECTORY)/3006-13.1b' \
+'$(JOUST_ROM_DIRECTORY)/joust_rom_2b_3006-14.c4|$(JOUST_ORIGINAL_DIRECTORY)/3006-14.2b' \
+'$(JOUST_ROM_DIRECTORY)/joust_rom_3b_3006-15.a4|$(JOUST_ORIGINAL_DIRECTORY)/3006-15.3b' \
+'$(JOUST_ROM_DIRECTORY)/joust_rom_4b_3006-16.e5|$(JOUST_ORIGINAL_DIRECTORY)/3006-16.4b' \
+'$(JOUST_ROM_DIRECTORY)/joust_rom_5b_3006-17.c5|$(JOUST_ORIGINAL_DIRECTORY)/3006-17.5b' \
+'$(JOUST_ROM_DIRECTORY)/joust_rom_6b_3006-18.a5|$(JOUST_ORIGINAL_DIRECTORY)/3006-18.6b' \
+'$(JOUST_ROM_DIRECTORY)/joust_rom_7b_3006-19.e6|$(JOUST_ORIGINAL_DIRECTORY)/3006-19.7b' \
+'$(JOUST_ROM_DIRECTORY)/joust_rom_8b_3006-20.c6|$(JOUST_ORIGINAL_DIRECTORY)/3006-20.8b' \
+'$(JOUST_ROM_DIRECTORY)/joust_rom_9b_3006-21.a6|$(JOUST_ORIGINAL_DIRECTORY)/3006-21.9b' \
+'$(JOUST_ROM_DIRECTORY)/joust_rom_10b_3006-22.a7|$(JOUST_ORIGINAL_DIRECTORY)/3006-22.10b' \
+'$(JOUST_ROM_DIRECTORY)/joust_rom_11b_3006-23.c7|$(JOUST_ORIGINAL_DIRECTORY)/3006-23.11b' \
+'$(JOUST_ROM_DIRECTORY)/joust_rom_12b_3006-24.e7|$(JOUST_ORIGINAL_DIRECTORY)/3006-24.12b' \
+'$(JOUST_REWRITE_SOUND_ROM_FILE)|$(JOUST_ORIGINAL_DIRECTORY)/joust.snd' \
+'$(JOUST_ROM_DIRECTORY)/decoder_rom_4.3g|$(JOUST_ORIGINAL_DIRECTORY)/decoder.4' \
+'$(JOUST_ROM_DIRECTORY)/decoder_rom_6.3c|$(JOUST_ORIGINAL_DIRECTORY)/decoder.6'
 ZIP_EXTENSION := zip
 BIN_EXTENSION := bin
 JOUST := joust
@@ -115,14 +135,41 @@ $(SRC_REWRITE_DIRECTORY)/joust_mods.ASM
 # $(JOUST_REWRITE_ROM_FILES): $(JOUST_ROM_DIRECTORY) $(BIN_DIRECTORY)/joust.p
 # 	p2bin $(BIN_DIRECTORY)/joust.p $@ -l 00 -r $(word $(call pos,$@,$(JOUST_REWRITE_ROM_FILES)),$(JOUST_BYTE_OFFSETS))
 
-.PHONY: build clean
+.PHONY: build clean download verify
 build: $(JOUST_REWRITE_ZIP)
+
+download: $(JOUST_ORIGINAL_STAMP)
+
+verify: build download
+	@set -e
+	for pair in $(JOUST_VERIFY_ROM_PAIRS); do
+		built="$${pair%%|*}"
+		original="$${pair#*|}"
+		built_sha="$$(sha1sum "$$built")"
+		original_sha="$$(sha1sum "$$original")"
+		built_sha="$${built_sha%% *}"
+		original_sha="$${original_sha%% *}"
+		if [ "$$built_sha" != "$$original_sha" ]; then
+			echo "SHA1 mismatch: $$built"
+			echo "  built:    $$built_sha"
+			echo "  original: $$original_sha ($$original)"
+			exit 1
+		fi
+		echo "OK $$built"
+	done
 
 clean:
 	rm -rf $(BIN_DIRECTORY) $(JOUST_ROM_DIRECTORY)
 
-$(BIN_DIRECTORY) $(JOUST_ROM_DIRECTORY):
+$(BIN_DIRECTORY) $(JOUST_ROM_DIRECTORY) $(JOUST_ORIGINAL_DIRECTORY):
 	mkdir -p $@
+
+$(JOUST_ORIGINAL_ZIP): | $(JOUST_ORIGINAL_DIRECTORY)
+	curl --fail --location --output $@ $(JOUST_ORIGINAL_URL)
+
+$(JOUST_ORIGINAL_STAMP): $(JOUST_ORIGINAL_ZIP) | $(JOUST_ORIGINAL_DIRECTORY)
+	unzip -o -q $< -d $(JOUST_ORIGINAL_DIRECTORY)
+	touch $@
 
 $(BIN_DIRECTORY)/joust.p $(BIN_DIRECTORY)/joust.lst: $(JOUST_REWRITE_PROGRAM_SOURCES) | $(BIN_DIRECTORY)
 	asl $(SRC_REWRITE_DIRECTORY)/make.ASM -L -olist $(BIN_DIRECTORY)/joust.lst -o $(BIN_DIRECTORY)/joust.p
