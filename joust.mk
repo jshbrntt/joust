@@ -123,6 +123,8 @@ JOUSTR_VERIFY_ROM_PAIRS := \
 JOUSTWR_VERIFY_ROM_PAIRS := \
 '$(JOUST_ROM_DIRECTORY)/joustwr/joust.wr7|$(JOUST_ORIGINAL_DIRECTORY)/joustwr/joust.wr7' \
 '$(JOUST_ROM_DIRECTORY)/joustwr/joust.wra|$(JOUST_ORIGINAL_DIRECTORY)/joustwr/joust.wra'
+JOUST_ZIP_VERIFY_ROM_PAIRS := \
+'$(JOUST_ROM_DIRECTORY)/joust.zip|$(JOUST_ORIGINAL_DIRECTORY)/joust.zip'
 ZIP_EXTENSION := zip
 BIN_EXTENSION := bin
 JOUST := joust
@@ -235,6 +237,7 @@ verify: build download
 	verify_group "joust (green label)" $(JOUST_VERIFY_PARENT_ROM_PAIRS)
 	verify_group "joustr (red label)" $(JOUSTR_VERIFY_ROM_PAIRS)
 	verify_group "joustwr (white/red label)" $(JOUSTWR_VERIFY_ROM_PAIRS)
+	verify_group "joust.zip (all labels)" $(JOUST_ZIP_VERIFY_ROM_PAIRS)
 
 build: $(JOUST_REWRITE_ZIP) $(JOUSTR_REWRITE_ROM_FILES) $(JOUSTWR_REWRITE_ROM_FILES)
 
