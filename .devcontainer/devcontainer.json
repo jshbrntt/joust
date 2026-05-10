@@ -6,7 +6,8 @@
   "remoteUser": "${localWorkspaceFolderBasename}",
   "features": {
     "./features/alpine-project": {
-      "project": "${localWorkspaceFolderBasename}"
+      "project": "${localWorkspaceFolderBasename}",
+      "packages": "bash curl git libgcc libstdc++ make openssh sudo tig unzip"
     },
     "./features/bun": {
       "version": "1.3.12",
@@ -30,5 +31,12 @@
     "./features/docker-in-docker",
     "./features/persist-files",
     "./features/playwright-mcp"
-  ]
+  ],
+  "customizations": {
+    "extensions": {
+      "vscode": [
+        "eamodio.gitlens"
+      ]
+    }
+  }
 }
