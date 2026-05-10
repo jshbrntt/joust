@@ -4,6 +4,14 @@
     "dockerfile": "Dockerfile"
   },
   "remoteUser": "${localWorkspaceFolderBasename}",
+  "runArgs": [
+    "--gpus=all",
+    "--shm-size=2g"
+  ],
+  "containerEnv": {
+    "NVIDIA_VISIBLE_DEVICES": "all",
+    "NVIDIA_DRIVER_CAPABILITIES": "all"
+  },
   "features": {
     "./features/alpine-project": {
       "project": "${localWorkspaceFolderBasename}",
