@@ -12,3 +12,8 @@
 ## Sandbox
 
 - In this workspace, the default command sandbox may fail because `bubblewrap` is unavailable. If a read-only or build command fails with that sandbox error, rerun the same command with escalation instead of changing the command strategy.
+
+## Devcontainer
+
+- When changing devcontainer configuration, prompt the user to rebuild the devcontainer and resume the Codex session so the running environment matches the checked-in configuration.
+- Persist tool and service configuration through project files or devcontainer setup files rather than only editing generated files inside a running devcontainer.
