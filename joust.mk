@@ -136,15 +136,13 @@ $(SRC_REWRITE_DIRECTORY)/joust_mods.ASM
 # 	p2bin $(BIN_DIRECTORY)/joust.p $@ -l 00 -r $(word $(call pos,$@,$(JOUST_REWRITE_ROM_FILES)),$(JOUST_BYTE_OFFSETS))
 
 .PHONY: build clean download verify
-build: $(JOUST_REWRITE_ZIP)
-
-download: $(JOUST_ORIGINAL_STAMP)
 
 verify: build download
 	@set -e
 	for pair in $(JOUST_VERIFY_ROM_PAIRS); do
 		built="$${pair%%|*}"
 		original="$${pair#*|}"
+		echo "Verifying $$built against $$original"
 		built_sha="$$(sha1sum "$$built")"
 		original_sha="$$(sha1sum "$$original")"
 		built_sha="$${built_sha%% *}"
@@ -157,6 +155,10 @@ verify: build download
 		fi
 		echo "OK $$built"
 	done
+
+build: $(JOUST_REWRITE_ZIP)
+
+download: $(JOUST_ORIGINAL_STAMP)
 
 clean:
 	rm -rf $(BIN_DIRECTORY) $(JOUST_ROM_DIRECTORY)
