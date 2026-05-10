@@ -6,4 +6,4 @@
 	url = git@github.com:jshbrntt/joust-rewrite.git
 [submodule "defender"]
 	path = defender
-	url = https://github.com/mwenge/defender.git
+	url = git@github.com:jshbrntt/defender.git
