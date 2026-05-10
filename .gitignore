@@ -38,3 +38,4 @@ Temporary Items
 *.icloud
 
 original/*
+.playwright-mcp

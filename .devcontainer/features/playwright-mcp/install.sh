@@ -12,7 +12,7 @@ INSTALL_CHROMIUM="${INSTALLCHROMIUM:-true}"
 apk add --no-cache nodejs npm
 
 if [ "$INSTALL_CHROMIUM" = "true" ]; then
-    apk add --no-cache chromium nss freetype harfbuzz ca-certificates ttf-freefont
+    apk add --no-cache chromium nss freetype harfbuzz ca-certificates ttf-freefont mesa-gl
     export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
 fi
 
@@ -29,7 +29,10 @@ if [ "$INSTALL_CHROMIUM" = "true" ]; then
       "executablePath": "/usr/bin/chromium-browser",
       "args": [
         "--no-sandbox",
-        "--disable-dev-shm-usage"
+        "--disable-dev-shm-usage",
+        "--use-gl=angle",
+        "--use-angle=gl",
+        "--disable-vulkan"
       ]
     }
   }
