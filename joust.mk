@@ -236,7 +236,7 @@ verify: build download
 	}
 	verify_group "joust (green label)" $(JOUST_VERIFY_PARENT_ROM_PAIRS)
 	verify_group "joustr (red label)" $(JOUSTR_VERIFY_ROM_PAIRS)
-	verify_group "joustwr (white/red label)" $(JOUSTWR_VERIFY_ROM_PAIRS)
+	verify_group "joustwr (yellow label)" $(JOUSTWR_VERIFY_ROM_PAIRS)
 	verify_group "joust.zip (all labels)" $(JOUST_ZIP_VERIFY_ROM_PAIRS)
 
 build: $(JOUST_REWRITE_ZIP) $(JOUSTR_REWRITE_ROM_FILES) $(JOUSTWR_REWRITE_ROM_FILES)
