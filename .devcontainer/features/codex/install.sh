@@ -8,7 +8,7 @@ fi
 
 VERSION="${VERSION:-latest}"
 
-apk add --no-cache ca-certificates curl git tar
+apk add --no-cache bubblewrap ca-certificates curl git tar
 
 ARCH="$(uname -m)"
 case "$ARCH" in
