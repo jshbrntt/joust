@@ -8,6 +8,8 @@ services:
     environment:
       DEV: 1
     image: ${IMAGE}
+    ports:
+      - "${MAME_HTTP_PORT:-8000}:${MAME_HTTP_PORT:-8000}"
     user: ${DEV_USER}:${DEV_GROUP}
     working_dir: ${DEV_PATH}
     volumes:

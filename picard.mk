@@ -32,6 +32,19 @@ DOCKER_SCAN ?=
 
 BUILDKIT_PROGRESS ?= plain
 BUILDKIT_INLINE_CACHE ?= 1
+MAME_PICARD_VARIABLES := \
+MAME_DIRECTORY \
+MAME_OUTPUT_DIRECTORY \
+MAME_TARGET \
+MAME_SUBTARGET \
+MAME_SOURCES \
+MAME_WEBASSEMBLY \
+MAME_EMMAKE \
+MAME_JOBS \
+MAME_HTTP_HOST \
+MAME_HTTP_PORT \
+MAME_ROM_SOURCE
+MAME_PICARD_ARGS = $(foreach variable,$(MAME_PICARD_VARIABLES),$(if $($(variable)),$(variable)='$($(variable))'))
 
 ifdef CI
 	DOCKER_REGISTRY_URL ?= $(IMAGE_REGISTRY_HOSTNAME)
@@ -71,7 +84,13 @@ required-login-variables \
 required-run-variables \
 run \
 scan \
-shell
+shell \
+mame \
+mame-build \
+mame-clean \
+mame-emscripten \
+mame-html \
+mame-serve
 
 default: $(if $(CI),rom,shell)
 
@@ -131,5 +150,23 @@ shell: command
 
 rom: COMMAND := make --keep-going
 rom: command
+
+mame: COMMAND = make mame $(MAME_PICARD_ARGS)
+mame: command
+
+mame-build: COMMAND = make mame-build $(MAME_PICARD_ARGS)
+mame-build: command
+
+mame-clean: COMMAND = make mame-clean $(MAME_PICARD_ARGS)
+mame-clean: command
+
+mame-emscripten: COMMAND = make mame-emscripten $(MAME_PICARD_ARGS)
+mame-emscripten: command
+
+mame-html: COMMAND = make mame-html $(MAME_PICARD_ARGS)
+mame-html: command
+
+mame-serve: COMMAND = make mame-serve $(MAME_PICARD_ARGS)
+mame-serve: command
 
 endif
