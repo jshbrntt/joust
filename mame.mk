@@ -62,14 +62,39 @@ $(MAME_HTML): $(MAME_JS) $(MAME_ROM) mame.mk | $(MAME_OUTPUT_DIRECTORY)
 		'  <meta charset="utf-8">' \
 		'  <link rel="icon" href="data:,">' \
 		'  <title>$(MAME_PROJECT)</title>' \
-		'  <style>html,body{margin:0;height:100%;background:#111;color:#eee;font-family:sans-serif}canvas{display:block;width:100vw;height:100vh}</style>' \
+		'  <style>' \
+		'    html,' \
+		'    body {' \
+		'      margin: 0;' \
+		'      width: 100%;' \
+		'      height: 100%;' \
+		'      background: #111;' \
+		'      color: #eee;' \
+		'      font-family: sans-serif;' \
+		'    }' \
+		'' \
+		'    body {' \
+		'      display: grid;' \
+		'      place-items: center;' \
+		'      overflow: hidden;' \
+		'    }' \
+		'' \
+		'    canvas {' \
+		'      display: block;' \
+		'      aspect-ratio: 4 / 3;' \
+		'      width: min(100vw, calc(100vh * 4 / 3));' \
+		'      height: auto;' \
+		'      max-width: 100vw;' \
+		'      max-height: 100vh;' \
+		'    }' \
+		'  </style>' \
 		'</head>' \
 		'<body>' \
 		'  <canvas id="canvas" tabindex="0"></canvas>' \
 		'  <script>' \
 		'    var Module = {' \
 		'      canvas: document.getElementById("canvas"),' \
-		'      arguments: ["$(MAME_SUBTARGET)", "-rompath", "/roms"],' \
+		'      arguments: ["$(MAME_SUBTARGET)", "-rompath", "/roms", "-window", "-resolution", "292x240", "-nokeepaspect"],' \
 		'      preRun: [function() {' \
 		'        Module.FS_createPath("/", "roms", true, true);' \
 		'        Module.FS_createPreloadedFile("/roms", "$(notdir $(MAME_ROM))", "$(notdir $(MAME_ROM))", true, false);' \
