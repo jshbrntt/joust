@@ -4,6 +4,7 @@ FROM ${EMSDK_IMAGE} AS emsdk
 FROM alpine:3.17.3@sha256:124c7d2707904eea7431fffe91522a01e5a861a624ee31d03372cc1d138a3126 AS base
 
 FROM base AS asl
+ARG TARGETARCH
 
 RUN apk add --no-cache \
 gcc \
@@ -14,7 +15,11 @@ WORKDIR /usr/src/asl
 
 COPY asl .
 
-COPY asl/Makefile.def-samples/Makefile.def-x86_64-unknown-linux Makefile.def
+RUN case "${TARGETARCH:-$(uname -m)}" in \
+  amd64|x86_64) cp Makefile.def-samples/Makefile.def-x86_64-unknown-linux Makefile.def ;; \
+  arm64|aarch64) cp Makefile.def-samples/Makefile.def-arm-apple-linux Makefile.def ;; \
+  *) sed 's/ -march=[^ ]*//' Makefile.def-samples/Makefile.def-x86_64-unknown-linux > Makefile.def ;; \
+  esac
 
 RUN make binaries
 
