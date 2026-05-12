@@ -237,7 +237,7 @@ $(JOUST_ROM_DIRECTORY)/joustr $(JOUST_ROM_DIRECTORY)/joustwr: | $(JOUST_ROM_DIRE
 	mkdir -p $@
 
 $(JOUST_ORIGINAL_ZIP): | $(JOUST_ORIGINAL_DIRECTORY)
-	curl --fail --location --retry 5 --retry-delay 2 --retry-all-errors --output $@ $(JOUST_ORIGINAL_URL)
+	curl --silent --fail --location --retry 5 --retry-delay 2 --retry-all-errors --output $@ $(JOUST_ORIGINAL_URL)
 
 $(JOUST_ORIGINAL_STAMP): $(JOUST_ORIGINAL_ZIP) | $(JOUST_ORIGINAL_DIRECTORY)
 	unzip -o -q $< -d $(JOUST_ORIGINAL_DIRECTORY)
