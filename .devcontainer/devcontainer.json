@@ -27,7 +27,7 @@
     "./features/persist-files": {
       "user": "${localWorkspaceFolderBasename}",
       "group": "${localWorkspaceFolderBasename}",
-      "paths": "file:/home/$USER/.bash_history,directory:/home/$USER/.codex,directory:/home/$USER/.docker,directory:/home/$USER/.ssh"
+      "paths": "file:/home/$USER/.bash_history,directory:/home/$USER/.codex,directory:/home/$USER/.ssh"
     },
     "./features/playwright-mcp": {}
   },
