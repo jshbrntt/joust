@@ -90,7 +90,8 @@ mame-build \
 mame-clean \
 mame-emscripten \
 mame-html \
-mame-serve
+mame-serve \
+clean
 
 default: $(if $(CI),rom,shell)
 
@@ -168,5 +169,9 @@ mame-html: command
 
 mame-serve: COMMAND = make mame-serve $(MAME_PICARD_ARGS)
 mame-serve: command
+
+clean:
+	git clean -xdff
+	git submodule foreach --recursive git clean -xdff
 
 endif
