@@ -1,7 +1,8 @@
 {
   "name": "${localWorkspaceFolderBasename}",
   "build": {
-    "dockerfile": "Dockerfile"
+    "dockerfile": "Dockerfile",
+    "context": ".."
   },
   "remoteUser": "${localWorkspaceFolderBasename}",
   "runArgs": [
@@ -15,15 +16,9 @@
   "features": {
     "./features/alpine-project": {
       "project": "${localWorkspaceFolderBasename}",
-      "packages": "bash curl git libgcc libstdc++ make openssh sudo tig unzip"
-    },
-    "./features/bun": {
-      "version": "1.3.12",
-      "user": "${localWorkspaceFolderBasename}"
+      "packages": "openssh sudo tig"
     },
     "./features/codex": {},
-    "./features/dive": {},
-    "./features/docker-in-docker": {},
     "./features/persist-files": {
       "user": "${localWorkspaceFolderBasename}",
       "group": "${localWorkspaceFolderBasename}",
@@ -33,17 +28,15 @@
   },
   "overrideFeatureInstallOrder": [
     "./features/alpine-project",
-    "./features/bun",
     "./features/codex",
-    "./features/dive",
-    "./features/docker-in-docker",
     "./features/persist-files",
     "./features/playwright-mcp"
   ],
   "customizations": {
     "extensions": {
       "vscode": [
-        "eamodio.gitlens"
+        "eamodio.gitlens",
+        "oven.bun-vscode"
       ]
     }
   }

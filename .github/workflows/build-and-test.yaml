@@ -1,30 +1,75 @@
 name: build-and-test
 run-name: Build and test
-on: [push]
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  DEVCONTAINER_IMAGE: ghcr.io/${{ github.repository }}/devcontainer
+
 jobs:
-  build-and-test:
+  build-image:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
-      - name: Restore build cache
-        id: build-cache-restore
-        continue-on-error: true
-        uses: actions/cache/restore@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
         with:
-          path: cache
-          key: build-cache
-      - name: Build
-        run: make
-      - name: Save build cache
-        id: build-cache-save
-        uses: actions/cache/save@v3
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and publish devcontainer image
+        uses: devcontainers/ci@v0.3
         with:
-          path: cache
-          key: ${{ steps.build-cache-restore.outputs.cache-primary-key }}
-      - name: Cache Docker environment
-        if: always()
-        run: make push
+          imageName: ${{ env.DEVCONTAINER_IMAGE }}
+          imageTag: ${{ github.sha }},cache
+          cacheFrom: ${{ env.DEVCONTAINER_IMAGE }}:cache
+          cacheTo: ${{ env.DEVCONTAINER_IMAGE }}:cache
+          push: always
+
+  verify:
+    if: github.event_name == 'push'
+    needs: build-image
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/${{ github.repository }}/devcontainer:${{ github.sha }}
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - run: bun install --frozen-lockfile
+      - run: bun run doctor
+      - run: bun run rom:verify
+
+  verify-pr:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Verify ROMs in devcontainer
+        uses: devcontainers/ci@v0.3
+        with:
+          configFile: .devcontainer/devcontainer.ci.json
+          imageName: ${{ env.DEVCONTAINER_IMAGE }}
+          cacheFrom: ${{ env.DEVCONTAINER_IMAGE }}:cache
+          push: never
+          runCmd: |
+            bun install --frozen-lockfile
+            bun run doctor
+            bun run rom:verify

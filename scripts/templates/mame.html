@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="icon" href="data:,">
+  <title>{{TITLE}}</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      background: #111;
+      color: #eee;
+      font-family: sans-serif;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    canvas {
+      display: block;
+      aspect-ratio: 4 / 3;
+      width: min(100vw, calc(100vh * 4 / 3));
+      height: auto;
+      max-width: 100vw;
+      max-height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas" tabindex="0"></canvas>
+  <script>
+    var Module = {
+      canvas: document.getElementById("canvas"),
+      arguments: ["{{SUBTARGET}}", "-rompath", "/roms", "-window", "-resolution", "292x240", "-nokeepaspect"],
+      preRun: [function() {
+        Module.FS_createPath("/", "roms", true, true);
+        Module.FS_createPreloadedFile("/roms", "{{ROM_FILE}}", "{{ROM_FILE}}", true, false);
+      }]
+    };
+  </script>
+  <script>
+    (async function() {
+      var wasmUrl = "{{WASM_FILE}}";
+      var chunkSize = {{CHUNK_SIZE}};
+      var head = await fetch(wasmUrl, { method: "HEAD", cache: "no-store" });
+      if (!head.ok) {
+        throw new Error("Failed to inspect " + wasmUrl + ": " + head.status);
+      }
+      var total = Number(head.headers.get("Content-Length"));
+      if (!Number.isFinite(total) || total <= 0) {
+        throw new Error("Missing Content-Length for " + wasmUrl);
+      }
+      var binary = new Uint8Array(total);
+      for (var start = 0; start < total; start += chunkSize) {
+        var end = Math.min(start + chunkSize, total) - 1;
+        var response = await fetch(wasmUrl, {
+          cache: "no-store",
+          headers: { Range: "bytes=" + start + "-" + end }
+        });
+        if (response.status !== 206) {
+          throw new Error("Range request failed for " + wasmUrl + ": " + response.status);
+        }
+        binary.set(new Uint8Array(await response.arrayBuffer()), start);
+      }
+      Module.wasmBinary = binary;
+      var script = document.createElement("script");
+      script.src = "{{JS_FILE}}";
+      document.body.appendChild(script);
+    }()).catch(function(error) {
+      console.error(error);
+    });
+  </script>
+</body>
+</html>

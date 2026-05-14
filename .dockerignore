@@ -1,7 +1,11 @@
-# Ignore everything by default
+# Keep the devcontainer build context focused on files copied during image build.
 **
-
-# Explicitly include files in the build context
-!asm6809
-!asl
-!.devcontainer/features/bun/install.sh
+!.devcontainer/
+!.devcontainer/**
+!tools/
+!tools/asl/
+!tools/asl/**
+!tools/asm6809/
+!tools/asm6809/**
+!tools/emsdk/
+!tools/emsdk/**

@@ -1,8 +1,5 @@
-bin
-roms
-cache
-
-env.mk
+bin/
+node_modules/
 
 ### macOS ###
 # General
@@ -37,5 +34,4 @@ Temporary Items
 # iCloud generated files
 *.icloud
 
-original/*
-.playwright-mcp
+.playwright-mcp/

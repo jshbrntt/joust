@@ -1,0 +1,22 @@
+{
+  "name": "joust",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "doctor": "bun scripts/doctor.ts",
+    "rom": "bun scripts/rom.ts build",
+    "rom:download": "bun scripts/rom.ts download",
+    "rom:verify": "bun scripts/rom.ts verify",
+    "mame": "bun scripts/mame.ts serve",
+    "mame:build": "bun scripts/mame.ts build",
+    "mame:serve": "bun scripts/mame.ts serve",
+    "mame:clean": "bun scripts/mame.ts clean",
+    "mame:rebuild": "bun scripts/mame.ts rebuild",
+    "server": "bun scripts/server.ts",
+    "clean": "bun scripts/clean.ts",
+    "clean:all": "bun scripts/clean.ts --all"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.16"
+  }
+}

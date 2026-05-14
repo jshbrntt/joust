@@ -1,6 +1,9 @@
-[submodule "asm6809"]
-	path = asm6809
+[submodule "tools/asm6809"]
+	path = tools/asm6809
 	url = git@github.com:jshbrntt/asm6809.git
+[submodule "tools/emsdk"]
+	path = tools/emsdk
+	url = git@github.com:emscripten-core/emsdk.git
 [submodule "src/rewrite"]
 	path = src/rewrite
 	url = git@github.com:jshbrntt/joust-rewrite.git

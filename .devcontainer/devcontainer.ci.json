@@ -1,0 +1,7 @@
+{
+  "name": "joust-ci",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  }
+}
