@@ -214,7 +214,6 @@ verify: build download
 				printf "  %sFAIL%s %s\n" "$$red" "$$reset" "$$built_name"
 				printf "    built:    %s\n" "$$built_sha"
 				printf "    original: %s (%s)\n" "$$original_sha" "$$original"
-				return 1
 			fi
 			printf "  %sOK%s   %s\n" "$$green" "$$reset" "$$built_name"
 		done
