@@ -43,7 +43,10 @@ MAME_EMMAKE \
 MAME_JOBS \
 MAME_HTTP_HOST \
 MAME_HTTP_PORT \
-MAME_ROM_SOURCE
+MAME_ROM_SOURCE \
+MAME_CHUNK_SIZE \
+MAME_SERVER \
+MAME_SERVER_SCRIPT
 MAME_PICARD_ARGS = $(foreach variable,$(MAME_PICARD_VARIABLES),$(if $($(variable)),$(variable)='$($(variable))'))
 
 ifdef CI

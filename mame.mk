@@ -9,6 +9,9 @@ MAME_JOBS ?= $(shell nproc 2>/dev/null || echo 1)
 MAME_HTTP_HOST ?= 0.0.0.0
 MAME_HTTP_PORT ?= 8000
 MAME_ROM_SOURCE ?= $(JOUST_REWRITE_ZIP)
+MAME_CHUNK_SIZE ?= 1048576
+MAME_SERVER ?= bun
+MAME_SERVER_SCRIPT ?= scripts/mame-server.ts
 MAME_SUBTARGET_FULL := $(subst -,_,$(MAME_SUBTARGET))
 MAME_PROJECT := $(MAME_SUBTARGET_FULL)
 MAME_JS := $(MAME_OUTPUT_DIRECTORY)/$(MAME_PROJECT).js
@@ -34,7 +37,7 @@ mame-html: $(MAME_HTML)
 
 mame-serve: mame-build
 	@printf 'Serving MAME at http://localhost:%s/%s\n' "$(MAME_HTTP_PORT)" "$(notdir $(MAME_HTML))"
-	python3 -m http.server $(MAME_HTTP_PORT) --bind $(MAME_HTTP_HOST) --directory $(MAME_OUTPUT_DIRECTORY)
+	$(MAME_SERVER) $(MAME_SERVER_SCRIPT) --host $(MAME_HTTP_HOST) --port $(MAME_HTTP_PORT) --root $(MAME_OUTPUT_DIRECTORY)
 
 mame-clean:
 	$(MAKE) -C $(MAME_DIRECTORY) clean $(MAME_BUILD_ARGS)
@@ -43,7 +46,8 @@ mame-clean:
 $(MAME_OUTPUT_DIRECTORY):
 	mkdir -p $@
 
-$(MAME_JS) $(MAME_WASM): | $(MAME_OUTPUT_DIRECTORY)
+$(MAME_JS) $(MAME_WASM): mame.mk | $(MAME_OUTPUT_DIRECTORY)
+	set -e
 	cd $(MAME_DIRECTORY)
 	$(MAME_EMMAKE) $(MAKE) -j$(MAME_JOBS) $(MAME_BUILD_ARGS)
 	cp -f $(MAME_PROJECT).js ../$(MAME_JS)
@@ -101,6 +105,37 @@ $(MAME_HTML): $(MAME_JS) $(MAME_ROM) mame.mk | $(MAME_OUTPUT_DIRECTORY)
 		'      }]' \
 		'    };' \
 		'  </script>' \
-		'  <script src="$(notdir $(MAME_JS))"></script>' \
-		'</body>' \
-		'</html>' > $@
+		'  <script>' \
+		'    (async function() {' \
+		'      var wasmUrl = "$(notdir $(MAME_WASM))";' \
+		'      var chunkSize = $(MAME_CHUNK_SIZE);' \
+		'      var head = await fetch(wasmUrl, { method: "HEAD", cache: "no-store" });' \
+		'      if (!head.ok) {' \
+		'        throw new Error("Failed to inspect " + wasmUrl + ": " + head.status);' \
+		'      }' \
+		'      var total = Number(head.headers.get("Content-Length"));' \
+		'      if (!Number.isFinite(total) || total <= 0) {' \
+		'        throw new Error("Missing Content-Length for " + wasmUrl);' \
+		'      }' \
+		'      var binary = new Uint8Array(total);' \
+		'      for (var start = 0; start < total; start += chunkSize) {' \
+		'        var end = Math.min(start + chunkSize, total) - 1;' \
+		'        var response = await fetch(wasmUrl, {' \
+		'          cache: "no-store",' \
+		'          headers: { Range: "bytes=" + start + "-" + end }' \
+		'        });' \
+		'        if (response.status !== 206) {' \
+		'          throw new Error("Range request failed for " + wasmUrl + ": " + response.status);' \
+		'        }' \
+		'        binary.set(new Uint8Array(await response.arrayBuffer()), start);' \
+		'      }' \
+		'      Module.wasmBinary = binary;' \
+		'      var script = document.createElement("script");' \
+		'      script.src = "$(notdir $(MAME_JS))";' \
+		'      document.body.appendChild(script);' \
+		'    }()).catch(function(error) {' \
+		'      console.error(error);' \
+		'    });' \
+		'  </script>' \
+	'</body>' \
+	'</html>' > $@

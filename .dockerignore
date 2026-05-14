@@ -4,3 +4,4 @@
 # Explicitly include files in the build context
 !asm6809
 !asl
+!.devcontainer/features/bun/install.sh

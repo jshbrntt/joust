@@ -80,3 +80,9 @@ COPY --from=asl /usr/src/asl/alink /usr/local/bin/alink
 COPY --from=asl /usr/src/asl/pbind /usr/local/bin/pbind
 COPY --from=asl /usr/src/asl/p2hex /usr/local/bin/p2hex
 COPY --from=asl /usr/src/asl/p2bin /usr/local/bin/p2bin
+
+
+COPY .devcontainer/features/bun/install.sh /tmp/bun-install.sh
+RUN apk add --no-cache curl tar xz && \
+sh /tmp/bun-install.sh && \
+rm -rf /var/cache/apk/* /tmp/bun-install.sh
